@@ -95,10 +95,11 @@ function bar_plot(samples_data){
             }
             reversed_otu_ids_data = otu_ids_data_string.reverse();
             reversed_sample_values_data = sample_values_data.reverse();
-            
+            reversed_otu_label_data = otu_label_data.reverse();
             let data_plot = [{
                 x: reversed_sample_values_data,
                 y: otu_ids_data_string,
+                text: reversed_otu_label_data,
                 type: "bar",
                 orientation: "h"
             }];
@@ -154,10 +155,11 @@ function bar_plot_update(samples_data){
             }
             reversed_otu_ids_data = otu_ids_data_string.reverse();
             reversed_sample_values_data = sample_values_data.reverse();
-            
+            reversed_otu_label_data = otu_label_data.reverse();
             let data_plot = [{
                 x: reversed_sample_values_data,
                 y: otu_ids_data_string,
+                text: reversed_otu_label_data,
                 type: "bar",
                 orientation: "h"
             }];
@@ -279,22 +281,24 @@ function bubble_plot_update(samples_data){
 // in the test object id change (select new option)
 function update_data(){
 
-    // var parent = document.getElementById("sample-metadata");
-    // var child = document.getElementsByName("p");
-    // parent.removeChild(child);
-    // parent.replaceChild(para, child);
+    //this code clean the data of the demographic info (from the paragraph tab)
+    var parent = document.getElementById("sample-metadata");
+    var pTag = parent.querySelectorAll('p');
+    pTag.forEach(function(p) {
+        p.innerHTML = "";
+        
+    });
+
     d3.json(url).then(function(data) {
     console.log(data);
-    // // get the names(id) list
+    // get the names(id) list
     names = data.names;
-    // get a object with the demographic info
+    // get the demographic info
     demographic_metadata = data.metadata
-
+    // get tje samples
     samples = data.samples;
-    var number_items = demographic_metadata.length;
+    
     // call functions to print information 
-    console.log("this is names in  "+ number_items);
-    // create_element_option(names);
     demographic_info(demographic_metadata);
     bar_plot_update(samples);
     bubble_plot_update(samples);
